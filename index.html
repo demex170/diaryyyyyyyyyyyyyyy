@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deme & Nini Diary</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+Georgian:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS ნაწილი - დიზაინი */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Georgian', sans-serif;
+            background: #121212; /* მუქი ფონი გარეთ */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* ტელეფონის ჩარჩო */
+        .phone-wrapper {
+            width: 375px;
+            height: 780px;
+            background: #1f1f1f;
+            border-radius: 55px;
+            padding: 12px;
+            box-shadow: 0 0 60px rgba(0,0,0,0.8);
+            position: relative;
+            border: 4px solid #2a2a2a;
+        }
+
+        /* ტელეფონის ეკრანი */
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 43px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background-image: linear-gradient(to bottom, #ffffff, #f1f3f5);
+        }
+
+        /* ზედა ზოლი (Status Bar) */
+        .status-bar {
+            height: 45px;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 700;
+            z-index: 11;
+        }
+
+        /* კამერის ადგილი (Notch) */
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 28px;
+            background: #1f1f1f;
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
+            z-index: 12;
+        }
+
+        /* აპლიკაციის შიგთავსი */
+        .app-content {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        header {
+            text-align: center;
+            margin-top: 25px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.3rem;
+            color: #ff5e78; /* ლამაზი ვარდისფერი */
+            margin-bottom: 5px;
+        }
+
+        .date-info {
+            font-size: 0.85rem;
+            color: #999;
+            text-transform: capitalize;
+        }
+
+        /* ფორმის სტილი */
+        .diary-input {
+            width: 100%;
+            border: 1px solid #eee;
+            background: #fff;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 18px;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .diary-input:focus {
+            border-color: #ff5e78;
+            box-shadow: 0 4px 15px rgba(255, 94, 120, 0.1);
+        }
+
+        input[type="text"] {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #2d3436;
+        }
+
+        textarea {
+            height: 320px;
+            resize: none;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .save-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 25px;
+            font-size: 1.15rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.4);
+        }
+
+        .save-btn:hover {
+            transform: scale(0.97);
+            box-shadow: 0 4px 10px rgba(255, 117, 140, 0.2);
+        }
+
+        /* ქვედა ხაზი (Home Indicator) */
+        .home-indicator {
+            height: 5px;
+            width: 130px;
+            background: #000;
+            margin: 12px auto;
+            border-radius: 10px;
+            opacity: 0.15;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-wrapper">
+        <div class="notch"></div>
+        
+        <div class="phone-screen">
+            <div class="status-bar">
+                <span id="phone-time">00:00</span>
+                <div class="icons" style="letter-spacing: 2px;">📶 🔋</div>
+            </div>
+
+            <div class="app-content">
+                <header>
+                    <h1>Diary</h1>
+                    <p class="date-info" id="full-date"></p>
+                </header>
+
+                <form action="https://formspree.io/f/mzdyvdap" method="POST">
+                    <input type="hidden" name="თარიღი" id="hidden-date">
+                    
+                    <input type="text" name="სათაური" class="diary-input" placeholder="დღის სათაური..." required>
+                    
+                    <textarea name="ჩანაწერი" class="diary-input" placeholder="რა მოხდა საინტერესო?.." required></textarea>
+
+                    <button type="submit" class="save-btn">შენახვა</button>
+                </form>
+            </div>
+
+            <div class="home-indicator"></div>
+        </div>
+    </div>
+
+    <script>
+        /* JavaScript - დროის და თარიღის განახლება */
+        function updateClock() {
+            const now = new Date();
+            
+            // ტელეფონის საათი (00:00)
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('phone-time').innerText = `${hh}:${mm}`;
+
+            // საიტზე გამოსაჩენი თარიღი
+            const options = { day: 'numeric', month: 'long', weekday: 'long' };
+            const dateStr = now.toLocaleDateString('ka-GE', options);
+            document.getElementById('full-date').innerText = dateStr;
+
+            // Formspree-სთვის სრული დრო
+            document.getElementById('hidden-date').value = now.toLocaleString('ka-GE');
+        }
+
+        // ყოველ წამს განახლება
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+
+</body>
+</html>

@@ -3,29 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deme & Nini Diary</title>
-    
+    <title>Deme & Nini Private Diary</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Sans+Georgian:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS ნაწილი - დიზაინი */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Noto Sans Georgian', sans-serif;
-            background: #121212; /* მუქი ფონი გარეთ */
+            background: #121212;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: #333;
         }
 
-        /* ტელეფონის ჩარჩო */
         .phone-wrapper {
             width: 375px;
             height: 780px;
@@ -37,20 +28,17 @@
             border: 4px solid #2a2a2a;
         }
 
-        /* ტელეფონის ეკრანი */
         .phone-screen {
             width: 100%;
             height: 100%;
             background: #fff;
             border-radius: 43px;
             overflow: hidden;
-            position: relative;
             display: flex;
             flex-direction: column;
-            background-image: linear-gradient(to bottom, #ffffff, #f1f3f5);
+            background-image: linear-gradient(to bottom, #fdfbfb, #ebedee);
         }
 
-        /* ზედა ზოლი (Status Bar) */
         .status-bar {
             height: 45px;
             padding: 0 30px;
@@ -59,136 +47,121 @@
             align-items: center;
             font-size: 13px;
             font-weight: 700;
-            z-index: 11;
         }
 
-        /* კამერის ადგილი (Notch) */
         .notch {
             position: absolute;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 160px;
-            height: 28px;
+            width: 160px; height: 28px;
             background: #1f1f1f;
-            border-bottom-left-radius: 18px;
-            border-bottom-right-radius: 18px;
-            z-index: 12;
+            border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;
+            z-index: 10;
         }
 
-        /* აპლიკაციის შიგთავსი */
+        /* ტაბების გადასართველი */
+        .tabs {
+            display: flex;
+            background: #eee;
+            margin: 10px 20px;
+            border-radius: 15px;
+            padding: 5px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+            transition: 0.3s;
+            background: transparent;
+            color: #777;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #ff5e78;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
         .app-content {
             flex: 1;
-            padding: 25px;
+            padding: 20px;
             overflow-y: auto;
         }
 
-        header {
-            text-align: center;
-            margin-top: 25px;
-            margin-bottom: 30px;
-        }
+        header { text-align: center; margin-bottom: 20px; }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ff5e78; }
 
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.3rem;
-            color: #ff5e78; /* ლამაზი ვარდისფერი */
-            margin-bottom: 5px;
-        }
+        .diary-form { display: none; }
+        .diary-form.active { display: block; animation: fadeIn 0.5s; }
 
-        .date-info {
-            font-size: 0.85rem;
-            color: #999;
-            text-transform: capitalize;
-        }
-
-        /* ფორმის სტილი */
         .diary-input {
             width: 100%;
             border: 1px solid #eee;
-            background: #fff;
-            border-radius: 18px;
-            padding: 18px;
-            margin-bottom: 18px;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
             font-family: inherit;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
             outline: none;
-            transition: 0.3s;
         }
 
-        .diary-input:focus {
-            border-color: #ff5e78;
-            box-shadow: 0 4px 15px rgba(255, 94, 120, 0.1);
-        }
-
-        input[type="text"] {
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: #2d3436;
-        }
-
-        textarea {
-            height: 320px;
-            resize: none;
-            line-height: 1.6;
-            color: #444;
-        }
+        textarea { height: 280px; resize: none; }
 
         .save-btn {
             width: 100%;
-            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-            color: white;
+            padding: 16px;
             border: none;
-            padding: 18px;
             border-radius: 25px;
-            font-size: 1.15rem;
+            color: white;
             font-weight: bold;
+            font-size: 1rem;
             cursor: pointer;
-            transition: 0.4s;
-            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .save-btn:hover {
-            transform: scale(0.97);
-            box-shadow: 0 4px 10px rgba(255, 117, 140, 0.2);
-        }
+        /* ფერები ნინისთვის და დემესთვის */
+        .nini-btn { background: linear-gradient(135deg, #ff758c, #ff7eb3); }
+        .deme-btn { background: linear-gradient(135deg, #4facfe, #00f2fe); }
 
-        /* ქვედა ხაზი (Home Indicator) */
-        .home-indicator {
-            height: 5px;
-            width: 130px;
-            background: #000;
-            margin: 12px auto;
-            border-radius: 10px;
-            opacity: 0.15;
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .home-indicator { height: 5px; width: 120px; background: #000; margin: 10px auto; border-radius: 10px; opacity: 0.1; }
     </style>
 </head>
 <body>
 
     <div class="phone-wrapper">
         <div class="notch"></div>
-        
         <div class="phone-screen">
             <div class="status-bar">
                 <span id="phone-time">00:00</span>
-                <div class="icons" style="letter-spacing: 2px;">📶 🔋</div>
+                <span>📶 🔋</span>
+            </div>
+
+            <header>
+                <h1 id="diary-title">ნინის დღიური</h1>
+            </header>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchDiary('nini')">ნინი</button>
+                <button class="tab-btn" onclick="switchDiary('deme')">დემე</button>
             </div>
 
             <div class="app-content">
-                <header>
-                    <h1>Diary</h1>
-                    <p class="date-info" id="full-date"></p>
-                </header>
+                <form id="nini-form" class="diary-form active" action="https://formspree.io/f/ჩასვი_ნინის_ლინკი" method="POST">
+                    <input type="text" name="სათაური" class="diary-input" placeholder="ნინის სათაური..." required>
+                    <textarea name="ჩანაწერი" class="diary-input" placeholder="რას ფიქრობ, ნინი?.." required></textarea>
+                    <button type="submit" class="save-btn nini-btn">ნინის ჩანაწერის შენახვა ✨</button>
+                </form>
 
-                <form action="https://formspree.io/f/mzdyvdap" method="POST">
-                    <input type="hidden" name="თარიღი" id="hidden-date">
-                    
-                    <input type="text" name="სათაური" class="diary-input" placeholder="დღის სათაური..." required>
-                    
-                    <textarea name="ჩანაწერი" class="diary-input" placeholder="რა მოხდა საინტერესო?.." required></textarea>
-
-                    <button type="submit" class="save-btn">შენახვა</button>
+                <form id="deme-form" class="diary-form" action="https://formspree.io/f/mzdyvdap" method="POST">
+                    <input type="text" name="სათაური" class="diary-input" placeholder="დემეს სათაური..." required>
+                    <textarea name="ჩანაწერი" class="diary-input" placeholder="რა მოხდა დღეს?.." required></textarea>
+                    <button type="submit" class="save-btn deme-btn">დემეს ჩანაწერის შენახვა 🚀</button>
                 </form>
             </div>
 
@@ -197,28 +170,31 @@
     </div>
 
     <script>
-        /* JavaScript - დროის და თარიღის განახლება */
-        function updateClock() {
-            const now = new Date();
+        function switchDiary(person) {
+            // ღილაკების გააქტიურება
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // ფორმების გამოჩენა/დამალვა
+            document.getElementById('nini-form').classList.remove('active');
+            document.getElementById('deme-form').classList.remove('active');
             
-            // ტელეფონის საათი (00:00)
-            const hh = String(now.getHours()).padStart(2, '0');
-            const mm = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('phone-time').innerText = `${hh}:${mm}`;
-
-            // საიტზე გამოსაჩენი თარიღი
-            const options = { day: 'numeric', month: 'long', weekday: 'long' };
-            const dateStr = now.toLocaleDateString('ka-GE', options);
-            document.getElementById('full-date').innerText = dateStr;
-
-            // Formspree-სთვის სრული დრო
-            document.getElementById('hidden-date').value = now.toLocaleString('ka-GE');
+            if(person === 'nini') {
+                document.getElementById('nini-form').classList.add('active');
+                document.getElementById('diary-title').innerText = "ნინის დღიური";
+                document.getElementById('diary-title').style.color = "#ff5e78";
+            } else {
+                document.getElementById('deme-form').classList.add('active');
+                document.getElementById('diary-title').innerText = "დემეს დღიური";
+                document.getElementById('diary-title').style.color = "#4facfe";
+            }
         }
 
-        // ყოველ წამს განახლება
-        setInterval(updateClock, 1000);
-        updateClock();
+        // საათის განახლება
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('phone-time').innerText = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+        }, 1000);
     </script>
-
 </body>
 </html>
